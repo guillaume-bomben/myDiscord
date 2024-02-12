@@ -1,17 +1,35 @@
-from flask import Flask, render_template
-from flask_socketio import SocketIO, emit
+import socket
+import threading
 
-app = Flask(__name__)
-socketio = SocketIO(app)
+def receive_messages(client_socket):
+    while True:
+        try:
+            message = client_socket.recv(1024).decode('utf-8')
+            if not message:
+                break
+            print(message)
+        except Exception as e:
+            print(f"Error: {e}")
+            break
 
-@app.route('/')
-def index():
-    return render_template('chat.html')
+def start_chat_client():
+    username = input("Enter your username: ")
 
-@socketio.on('message')
-def handle_message(msg):
-    print('Message: ' + msg['data'])
-    emit('message', {'username': msg['username'], 'message': msg['data']}, broadcast=True)
+    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client_socket.connect(('localhost', 12345))
 
-if __name__ == '__main__':
-    socketio.run(app, debug=True)
+    client_socket.send(username.encode('utf-8'))
+
+    welcome_message = client_socket.recv(1024).decode('utf-8')
+    print(welcome_message)
+
+    message_receiver = threading.Thread(target=receive_messages, args=(client_socket,))
+    message_receiver.start()
+
+    while True:
+        message = input()
+        client_socket.send(f"{username}: {message}".encode('utf-8'))
+
+if __name__ == "__main__":
+    start_chat_client()
+
