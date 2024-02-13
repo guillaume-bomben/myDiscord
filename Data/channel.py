@@ -25,3 +25,18 @@ class channel(DB):
         query = "UPDATE channel SET nom = %s WHERE id = %s"
         param = (nom,id)
         self.executeQuery(query,param)
+    
+    def update_id_serveur(self,id,id_serveur):
+        query = "UPDATE channel SET id_serveur = %s WHERE id = %s"
+        param = (id_serveur,id)
+        self.executeQuery(query,param)
+    
+    def get_id_by_nom(self,nom):
+        query = "SELECT id FROM channel WHERE nom = %s"
+        param = (nom,)
+        return self.fetch(query,param)
+
+    def get_nom_by_id(self,id):
+        query = "SELECT nom FROM channel WHERE id = %s"
+        param = (id,)
+        return self.fetch(query,param)
