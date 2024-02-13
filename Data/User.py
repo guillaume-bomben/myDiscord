@@ -40,3 +40,25 @@ class User(DB):
         query = "UPDATE user SET mdp = %s WHERE id = %s"
         param = (mdp,id)
         self.executeQuery(query,param)
+    
+    def get_user_by_email(self,email):
+        query = "SELECT * FROM user WHERE email = %s"
+        param = (email,)
+        return self.fetch(query,param)
+
+    def get_user_by_id(self,id):
+        query = "SELECT * FROM user WHERE id = %s"
+        param = (id,)
+        return self.fetch(query,param)
+
+    def get_user_by_nom(self,nom):
+        query = "SELECT * FROM user WHERE nom = %s"
+        param = (nom,)
+        return self.fetch(query,param)
+    
+    def get_user_by_prenom(self,prenom):
+        query = "SELECT * FROM user WHERE prenom = %s"
+        param = (prenom,)
+        return self.fetch(query,param)
+    
+    
