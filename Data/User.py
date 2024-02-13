@@ -61,4 +61,7 @@ class User(DB):
         param = (prenom,)
         return self.fetch(query,param)
     
-    
+    def get_data_by_id(self,id):
+        query = "SELECT * FROM user WHERE id = %s"
+        param = (id,)
+        return self.fetch(query,param)
