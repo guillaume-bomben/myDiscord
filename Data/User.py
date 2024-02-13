@@ -41,23 +41,23 @@ class User(DB):
         param = (mdp,id)
         self.executeQuery(query,param)
     
-    def get_user_by_email(self,email):
-        query = "SELECT * FROM user WHERE email = %s"
+    def get_id_by_email(self,email):
+        query = "SELECT id FROM user WHERE email = %s"
         param = (email,)
         return self.fetch(query,param)
 
-    def get_user_by_id(self,id):
-        query = "SELECT * FROM user WHERE id = %s"
+    def get_id_by_id(self,id):
+        query = "SELECT id FROM user WHERE id = %s"
         param = (id,)
         return self.fetch(query,param)
 
-    def get_user_by_nom(self,nom):
-        query = "SELECT * FROM user WHERE nom = %s"
+    def get_id_by_nom(self,nom):
+        query = "SELECT id FROM user WHERE nom = %s"
         param = (nom,)
         return self.fetch(query,param)
     
-    def get_user_by_prenom(self,prenom):
-        query = "SELECT * FROM user WHERE prenom = %s"
+    def get_id_by_prenom(self,prenom):
+        query = "SELECT id FROM user WHERE prenom = %s"
         param = (prenom,)
         return self.fetch(query,param)
     
