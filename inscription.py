@@ -12,7 +12,7 @@ class Inscription:
 
         # Créer un cadre pour contenir les widgets d'inscription
         frame = tk.Frame(master, bg='#0A3D62')
-        frame.pack(expand=True, padx=50, pady=50)
+        frame.pack(expand=True, padx=100, pady=100)
 
         # Champ Prénom
         tk.Label(frame, text="Prénom :", bg='#0A3D62', fg='white').grid(row=0, column=0, pady=(10, 0))
