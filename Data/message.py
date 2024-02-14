@@ -46,6 +46,11 @@ class message(DB):
         param = (id,)
         return self.fetch(query,param)
     
+    def get_message_by_id_channel(self,id_channel):
+        query = "SELECT message FROM message WHERE id_channel = %s"
+        param = (id_channel,)
+        return self.fetch(query,param)
+    
     def get_date_by_id(self,id):
         query = "SELECT date FROM message WHERE id = %s"
         param = (id,)
