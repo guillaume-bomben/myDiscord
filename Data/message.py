@@ -1,13 +1,13 @@
-from DB import DB
+from Data.DB import DB
 
 class message(DB):
     def __init__(self, host, user, password, database):
         super().__init__(host, user, password, database)
         self.data_liste = []
     
-    def create(self,message,date,id_channel,id_user):
-        query = "INSERT INTO message (message,date,id_channel,id_user) VALUES (%s,%s,%s,%s)"
-        param = (message,date,id_channel,id_user)
+    def create(self,message,date,id_chanel,id_user):
+        query = "INSERT INTO message (message,date,id_chanel,id_user) VALUES (%s,%s,%s,%s)"
+        param = (message,date,id_chanel,id_user)
         self.executeQuery(query,param)
     
     def read(self):
@@ -31,9 +31,9 @@ class message(DB):
         param = (date,id)
         self.executeQuery(query,param)
     
-    def update_id_channel(self,id,id_channel):
-        query = "UPDATE message SET id_channel = %s WHERE id = %s"
-        param = (id_channel,id)
+    def update_id_chanel(self,id,id_chanel):
+        query = "UPDATE message SET id_chanel = %s WHERE id = %s"
+        param = (id_chanel,id)
         self.executeQuery(query,param)
     
     def update_id_user(self,id,id_user):
@@ -46,9 +46,9 @@ class message(DB):
         param = (id,)
         return self.fetch(query,param)
     
-    def get_message_by_id_channel(self,id_channel):
-        query = "SELECT message FROM message WHERE id_channel = %s"
-        param = (id_channel,)
+    def get_message_by_id_chanel(self,id_chanel):
+        query = "SELECT message FROM message WHERE id_chanel = %s"
+        param = (id_chanel,)
         return self.fetch(query,param)
     
     def get_date_by_id(self,id):
@@ -56,8 +56,8 @@ class message(DB):
         param = (id,)
         return self.fetch(query,param)
     
-    def get_id_channel_by_id(self,id):
-        query = "SELECT id_channel FROM message WHERE id = %s"
+    def get_id_chanel_by_id(self,id):
+        query = "SELECT id_chanel FROM message WHERE id = %s"
         param = (id,)
         return self.fetch(query,param)
     

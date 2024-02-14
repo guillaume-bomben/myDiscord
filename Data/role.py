@@ -1,4 +1,4 @@
-from DB import DB
+from Data.DB import DB
 
 class role(DB):
     def __init__(self, host, user, password, database):
