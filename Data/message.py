@@ -4,6 +4,7 @@ class message(DB):
     def __init__(self, host, user, password, database):
         super().__init__(host, user, password, database)
         self.data_liste = []
+        self.read()
     
     def create(self,message,date,id_chanel,id_user):
         query = "INSERT INTO message (message,date,id_chanel,id_user) VALUES (%s,%s,%s,%s)"
