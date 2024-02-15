@@ -5,14 +5,14 @@ from inscription import Inscription
 def main():
     root = tk.Tk()
     root.attributes('-fullscreen', True)
-    app = Connexion(root, afficher_inscription)
+    Connexion(root, afficher_inscription)  # Simplified initialization
     root.mainloop()
 
 def afficher_inscription(master):
-    master.withdraw()  # Cache la fenêtre de connexion
-    inscription_window = tk.Toplevel()  # Utilisez Toplevel au lieu de Tk pour la fenêtre d'inscription
+    master.withdraw()  # Hide the login window
+    inscription_window = tk.Toplevel(master)  # Ensures correct parent-child relationship
     inscription_window.attributes('-fullscreen', True)
-    app_inscription = Inscription(inscription_window, lambda: master.destroy())  # Passer une fonction pour fermer root
+    Inscription(inscription_window, lambda: master.destroy())  # Simplified lambda function
 
 if __name__ == "__main__":
     main()
