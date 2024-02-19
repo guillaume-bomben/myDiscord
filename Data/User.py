@@ -6,7 +6,7 @@ class User(DB):
         self.data_list = []
         
     def create(self,nom,prenom,email,mdp):
-        query = "INSERT INTO user (nom,prenom,email,mdp) VALUES (%s,%s,%s,%s)"
+        query = "INSERT INTO user (nom,prenom,mail,mdp) VALUES (%s,%s,%s,%s)"
         param = (nom,prenom,email,mdp)
         self.executeQuery(query,param)
     
@@ -31,8 +31,8 @@ class User(DB):
         param = (prenom,id)
         self.executeQuery(query,param)
     
-    def update_email(self,id,email):
-        query = "UPDATE user SET email = %s WHERE id = %s"
+    def update_mail(self,id,email):
+        query = "UPDATE user SET mail = %s WHERE id = %s"
         param = (email,id)
         self.executeQuery(query,param)
 
@@ -42,7 +42,7 @@ class User(DB):
         self.executeQuery(query,param)
     
     def get_id_by_email(self,email):
-        query = "SELECT id FROM user WHERE email = %s"
+        query = "SELECT id FROM user WHERE mail = %s"
         param = (email,)
         return self.fetch(query,param)
 
