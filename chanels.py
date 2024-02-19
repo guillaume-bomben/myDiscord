@@ -16,6 +16,12 @@ class chanels:
         self.chan = chanel('localhost','root','1234','myDiscord')
         self.mess = message('localhost','root','1234','myDiscord')
         
+        self.affiche()
+        
+        self.windows.mainloop()
+
+
+    def affiche(self):
         # Créer un cadre pour contenir les messages
         self.messages_frame = tkinter.Frame(self.windows)
         self.messages_frame.pack()
@@ -38,8 +44,6 @@ class chanels:
         self.send_button.pack()
         
         self.chat()
-        
-        self.windows.mainloop()
 
 
     def chat(self):
