@@ -4,6 +4,7 @@ class User(DB):
     def __init__(self, host, user, password, database):
         super().__init__(host, user, password, database)
         self.data_list = []
+        self.read()
         
     def create(self,nom,prenom,email,mdp):
         query = "INSERT INTO user (nom,prenom,mail,mdp) VALUES (%s,%s,%s,%s)"
