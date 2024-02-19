@@ -1,8 +1,10 @@
+from Data.User import User
 import tkinter as tk
 from tkinter import messagebox
 
 class Inscription:
     def __init__(self, master, on_close_callback=None):
+        self.user_list = User('localhost','root','1234','myDiscord')
         self.master = master
         self.on_close_callback = on_close_callback  # Store callback
         self.master.title("Page d'Inscription")
@@ -18,7 +20,10 @@ class Inscription:
         self.entries = []
         for i, text in enumerate(labels_texts):
             tk.Label(frame, text=text, bg='#0A3D62', fg='white').grid(row=i, column=0, pady=10)
-            entry = tk.Entry(frame, width=30, bg='white', fg='black', borderwidth=0)
+            if i == 3:
+                entry = tk.Entry(frame, width=30, bg='white', fg='black', borderwidth=0, show="*")
+            else:
+                entry = tk.Entry(frame, width=30, bg='white', fg='black', borderwidth=0)
             entry.grid(row=i, column=1, pady=10)
             self.entries.append(entry)
 
@@ -29,7 +34,8 @@ class Inscription:
         nom = self.entries[1].get()
         email = self.entries[2].get()
         password = self.entries[3].get()
-        messagebox.showinfo("Inscription réussie", f"Bienvenue, {prenom} {nom}!")
+        self.user_list.create(nom, prenom, email, password)
+        '''messagebox.showinfo("Inscription réussie", f"Bienvenue, {prenom} {nom}!")'''
 
     def on_close(self):
         if self.on_close_callback:
