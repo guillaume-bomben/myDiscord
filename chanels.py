@@ -49,7 +49,9 @@ class chanels:
     def chat(self):
         # Insérer chaque message dans la zone de texte
         for message in self.mess.get_message_by_id_chanel(self.curent_chanel):
-            self.messages_text.insert(tkinter.END, f"{self.user_list.get_nom_and_prenom_by_id(self.curent_user)}: {message}\n")
+            id = self.mess.get_id_user_by_message(message[0])
+            print(id[0][0])
+            self.messages_text.insert(tkinter.END, f"{self.user_list.get_nom_and_prenom_by_id(id[0][0])}: {message}\n")
 
 
     def send_message(self):

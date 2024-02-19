@@ -76,3 +76,8 @@ class message(DB):
         query = "SELECT id FROM message WHERE date = %s"
         param = (date,)
         return self.fetch(query,param)
+    
+    def get_id_user_by_message(self,message):
+        query = "SELECT id_user FROM message WHERE message = %s"
+        param = (message,)
+        return self.fetch(query,param)
