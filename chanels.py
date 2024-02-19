@@ -55,7 +55,7 @@ class chanels:
         self.mess.create(message_content,date,self.curent_chanel,self.curent_user)
 
         # Afficher le message dans la zone de texte
-        self.messages_text.insert(tkinter.END, f"{self.curent_user}: {message_content}\n")
+        self.messages_text.insert(tkinter.END, f"{self.user_list.get_nom_and_prenom_by_id(self.curent_user)}: {message_content}\n")
 
         # Vider la zone de saisie
         self.entry_text.delete(0, tkinter.END)
