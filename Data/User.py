@@ -47,11 +47,6 @@ class User(DB):
         param = (email,)
         return self.fetch(query,param)
 
-    def get_id_by_id(self,id):
-        query = "SELECT id FROM user WHERE id = %s"
-        param = (id,)
-        return self.fetch(query,param)
-
     def get_id_by_nom(self,nom):
         query = "SELECT id FROM user WHERE nom = %s"
         param = (nom,)
@@ -70,4 +65,9 @@ class User(DB):
     def get_nom_and_prenom_by_id(self,id):
         query = "SELECT nom,prenom FROM user WHERE id = %s"
         param = (id,)
+        return self.fetch(query,param)
+    
+    def get_id_by_email_and_mdp(self,email,mdp):
+        query = "SELECT id FROM user WHERE mail = %s AND mdp = %s"
+        param = (email,mdp)
         return self.fetch(query,param)
