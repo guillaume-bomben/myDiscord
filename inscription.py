@@ -34,8 +34,11 @@ class Inscription:
         nom = self.entries[1].get()
         email = self.entries[2].get()
         password = self.entries[3].get()
-        self.user_list.create(nom, prenom, email, password)
-        '''messagebox.showinfo("Inscription réussie", f"Bienvenue, {prenom} {nom}!")'''
+        if self.entries[0].get() == "" or self.entries[1].get() == "" or self.entries[2].get() == "" or self.entries[3].get() == "":
+            messagebox.showerror("Erreur", "Veuillez remplir tous les champs")
+            return
+        else:
+            self.user_list.create(nom, prenom, email, password)
 
     def on_close(self):
         if self.on_close_callback:
