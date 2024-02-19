@@ -65,3 +65,8 @@ class User(DB):
         query = "SELECT * FROM user WHERE id = %s"
         param = (id,)
         return self.fetch(query,param)
+    
+    def get_nom_and_prenom_by_id(self,id):
+        query = "SELECT nom,prenom FROM user WHERE id = %s"
+        param = (id,)
+        return self.fetch(query,param)
