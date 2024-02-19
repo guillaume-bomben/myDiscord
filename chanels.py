@@ -1,5 +1,6 @@
 from Data.chanel import chanel
 from Data.message import message
+from Data.User import User
 import tkinter
 import time
 
@@ -11,6 +12,7 @@ class chanels:
         self.curent_chanel = 1
         self.curent_user = 1
         
+        self.user_list = User('localhost','root','1234','myDiscord')
         self.chan = chanel('localhost','root','1234','myDiscord')
         self.mess = message('localhost','root','1234','myDiscord')
         
@@ -43,7 +45,7 @@ class chanels:
     def chat(self):
         # Insérer chaque message dans la zone de texte
         for message in self.mess.get_message_by_id_chanel(self.curent_chanel):
-            self.messages_text.insert(tkinter.END, f"{self.curent_user}: {message}\n")
+            self.messages_text.insert(tkinter.END, f"{self.user_list.get_nom_and_prenom_by_id(self.curent_user)}: {message}\n")
 
 
     def send_message(self):
