@@ -4,6 +4,7 @@ class chan_user(DB):
     def __init__(self, host, user, password, database):
         super().__init__(host, user, password, database)
         self.data_liste = []
+        self.read()
     
     def create(self,id_chanel,id_user,id_role):
         query = "INSERT INTO chan_user (id_chanel,id_user,id_role) VALUES (%s,%s,%s)"
