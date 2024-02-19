@@ -4,6 +4,7 @@ class role(DB):
     def __init__(self, host, user, password, database):
         super().__init__(host, user, password, database)
         self.data_liste = []
+        self.read()
     
     def create(self,nom):
         query = "INSERT INTO role (nom) VALUES (%s)"
