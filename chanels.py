@@ -16,12 +16,15 @@ class chanels:
         self.chan = chanel('localhost','root','1234','myDiscord')
         self.mess = message('localhost','root','1234','myDiscord')
         
-        self.affiche()
+        self.affiche_chat()
+        self.affiche_chanels()
+        
+        tkinter.Button(self.windows, text="Add Chanel", command=self.add_chanel).pack()
         
         self.windows.mainloop()
 
 
-    def affiche(self):
+    def affiche_chat(self):
         #create a frame to contain the messages
         self.messages_frame = tkinter.Frame(self.windows)
         self.messages_frame.pack()
@@ -42,10 +45,10 @@ class chanels:
         self.send_button = tkinter.Button(self.entry_frame, text="Envoyer", command=self.send_message)
         self.send_button.pack()
         
-        self.chat()
+        self.add_message_in_chat()
 
 
-    def chat(self):
+    def add_message_in_chat(self):
         # insert the messages into the text box
         for message in self.mess.get_message_by_id_chanel(self.curent_chanel):
             id = self.mess.get_id_user_by_message(message[0])
@@ -63,3 +66,19 @@ class chanels:
         self.messages_text.insert(tkinter.END, f"{self.user_list.get_nom_and_prenom_by_id(self.curent_user)}: {message_content}\n")
         # clear the entry
         self.entry_text.delete(0, tkinter.END)
+
+
+    def change_chanel(self,chanel_id):
+        self.curent_chanel = chanel_id
+        self.messages_text.delete(1.0, tkinter.END)
+        self.add_message_in_chat()
+        
+    
+    def affiche_chanels(self):
+        self.chanels_frame = tkinter.Frame(self.windows)
+        self.chanels_frame.pack()
+        for chanel in self.chan.data_list:
+            self.chanel_button = tkinter.Button(self.chanels_frame, text=chanel[1], command=lambda chanel_id=chanel[0]: self.change_chanel(chanel_id))
+            self.chanel_button.pack()
+    
+    
