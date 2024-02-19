@@ -1,8 +1,11 @@
 import tkinter as tk
 from tkinter import messagebox
+from chanels import chanels
+from Data.User import User
 
 class Connexion:
     def __init__(self, master, switch_function):
+        self.user_list = User('localhost','root','1234','myDiscord')
         self.master = master
         self.switch_function = switch_function
         self.master.title("Page de Connexion")
@@ -28,4 +31,9 @@ class Connexion:
     def soumettre_connexion(self):
         email = self.adresse_mail_connexion.get()
         password = self.mot_de_passe_connexion.get()
-        messagebox.showinfo("Connexion réussie", f"Vous êtes connecté avec l'adresse {email}!")
+        id = self.user_list.get_id_by_email_and_mdp(email, password)
+        if id == []:
+            messagebox.showerror("Erreur", "Adresse mail ou mot de passe incorrect")
+            return
+        else:
+            Chan = chanels(id[0][0])

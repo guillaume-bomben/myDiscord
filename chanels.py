@@ -5,12 +5,12 @@ import tkinter
 import time
 
 class chanels:
-    def __init__(self):
+    def __init__(self,user_id):
         self.windows = tkinter.Tk()
         self.windows.title('Discord chat')
         
         self.curent_chanel = 1
-        self.curent_user = 1
+        self.curent_user = user_id
         
         self.user_list = User('localhost','root','1234','myDiscord')
         self.chan = chanel('localhost','root','1234','myDiscord')

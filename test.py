@@ -1,3 +1,3 @@
 from chanels import chanels
 
-chan = chanels()
+chan = chanels(1)
