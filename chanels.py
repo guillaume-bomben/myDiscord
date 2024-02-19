@@ -26,7 +26,7 @@ class chanels:
         self.messages_frame = tkinter.Frame(self.windows)
         self.messages_frame.pack()
         # Créer une zone de texte pour afficher les messages
-        self.messages_text = tkinter.Text(self.messages_frame, width=50, height=20)
+        self.messages_text = tkinter.Text(self.messages_frame, width=150, height=50)
         self.messages_text.pack()
         # Créer une barre de défilement verticale pour la zone de texte
         self.scrollbar = tkinter.Scrollbar(self.messages_frame, command=self.messages_text.yview)
@@ -50,8 +50,9 @@ class chanels:
         # Insérer chaque message dans la zone de texte
         for message in self.mess.get_message_by_id_chanel(self.curent_chanel):
             id = self.mess.get_id_user_by_message(message[0])
-            print(id[0][0])
-            self.messages_text.insert(tkinter.END, f"{self.user_list.get_nom_and_prenom_by_id(id[0][0])}: {message}\n")
+            date = self.mess.get_date_by_message(message[0])
+            user_name = self.user_list.get_nom_and_prenom_by_id(id[0][0])
+            self.messages_text.insert(tkinter.END, f"{user_name[0][0]} {user_name[0][1]} ({date[0][0]}): {message[0]}\n")
 
 
     def send_message(self):
