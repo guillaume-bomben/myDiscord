@@ -22,24 +22,23 @@ class chanels:
 
 
     def affiche(self):
-        # Créer un cadre pour contenir les messages
+        #create a frame to contain the messages
         self.messages_frame = tkinter.Frame(self.windows)
         self.messages_frame.pack()
-        # Créer une zone de texte pour afficher les messages
+        #create a text box to display the messages
         self.messages_text = tkinter.Text(self.messages_frame, width=150, height=50)
         self.messages_text.pack()
-        # Créer une barre de défilement verticale pour la zone de texte
+        #create a scrollbar for the text box
         self.scrollbar = tkinter.Scrollbar(self.messages_frame, command=self.messages_text.yview)
         self.scrollbar.pack(side=tkinter.RIGHT, fill=tkinter.Y)
-        # Définir la zone de texte pour qu'elle utilise la barre de défilement
+        # set text widget to use vertical scrollbar
         self.messages_text.config(yscrollcommand=self.scrollbar.set)
-        # Créer une zone de saisie pour envoyer des messages
+        #create a frame to contain the entry and the button
         self.entry_frame = tkinter.Frame(self.windows)
         self.entry_frame.pack()
         self.entry_text = tkinter.Entry(self.entry_frame, width=50)
         self.entry_text.pack()
-        
-        # Bouton d'envoi
+        # send button
         self.send_button = tkinter.Button(self.entry_frame, text="Envoyer", command=self.send_message)
         self.send_button.pack()
         
@@ -47,7 +46,7 @@ class chanels:
 
 
     def chat(self):
-        # Insérer chaque message dans la zone de texte
+        # insert the messages into the text box
         for message in self.mess.get_message_by_id_chanel(self.curent_chanel):
             id = self.mess.get_id_user_by_message(message[0])
             date = self.mess.get_date_by_message(message[0])
@@ -58,11 +57,9 @@ class chanels:
     def send_message(self):
         message_content = self.entry_text.get()
         date = time.strftime("%Y-%m-%d %H:%M:%S")
-        # Enregistrer le message dans la base de données
+        # save the message in the database
         self.mess.create(message_content,date,self.curent_chanel,self.curent_user)
-
-        # Afficher le message dans la zone de texte
+        # show the message in the text box
         self.messages_text.insert(tkinter.END, f"{self.user_list.get_nom_and_prenom_by_id(self.curent_user)}: {message_content}\n")
-
-        # Vider la zone de saisie
+        # clear the entry
         self.entry_text.delete(0, tkinter.END)
