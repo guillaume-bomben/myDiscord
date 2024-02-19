@@ -81,4 +81,20 @@ class chanels:
             self.chanel_button = tkinter.Button(self.chanels_frame, text=chanel[1], command=lambda chanel_id=chanel[0]: self.change_chanel(chanel_id))
             self.chanel_button.pack()
     
+    def add_chanel(self):
+        add_page = tkinter.Toplevel(self.windows)
+        add_page.title('Add chanel')
+        add_page.geometry('300x100')
+        add_page.configure(bg='#0A3D62')
+        
+        nom_chanel = tkinter.Entry(add_page, width=30, bg='white', fg='black', borderwidth=0)
+        nom_chanel.pack(pady=25)
+        
+        button = tkinter.Button(add_page, text="Add", command=lambda: self.create_chanel(nom_chanel.get()))
+        button.pack()
     
+    def create_chanel(self,nom):
+        self.chan.create(nom)
+        self.chan.read()
+        self.affiche_chanels()
+        self.add_chanel.destroy()
