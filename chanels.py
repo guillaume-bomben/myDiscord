@@ -19,7 +19,7 @@ class chanels:
         self.affiche_chat()
         self.affiche_chanels()
         
-        tkinter.Button(self.windows, text="Add Chanel", command=self.add_chanel).pack()
+        tkinter.Button(self.windows, text="Add Chanel", command=self.add_chanel).grid(row=1, column=0, sticky="nsew")
         
         self.windows.mainloop()
 
@@ -27,23 +27,23 @@ class chanels:
     def affiche_chat(self):
         #create a frame to contain the messages
         self.messages_frame = tkinter.Frame(self.windows)
-        self.messages_frame.pack()
+        self.messages_frame.grid(row=0, column=1, sticky="nsew")
         #create a text box to display the messages
-        self.messages_text = tkinter.Text(self.messages_frame, width=150, height=50)
-        self.messages_text.pack()
+        self.messages_text = tkinter.Text(self.messages_frame, width=150, height=25)
+        self.messages_text.grid(row=0, column=0, sticky="nsew")
         #create a scrollbar for the text box
         self.scrollbar = tkinter.Scrollbar(self.messages_frame, command=self.messages_text.yview)
-        self.scrollbar.pack(side=tkinter.RIGHT, fill=tkinter.Y)
+        self.scrollbar.grid(row=0, column=1, sticky="nsew")
         # set text widget to use vertical scrollbar
         self.messages_text.config(yscrollcommand=self.scrollbar.set)
         #create a frame to contain the entry and the button
         self.entry_frame = tkinter.Frame(self.windows)
-        self.entry_frame.pack()
+        self.entry_frame.grid(row=1, column=1, sticky="nsew")
         self.entry_text = tkinter.Entry(self.entry_frame, width=50)
-        self.entry_text.pack()
+        self.entry_text.grid(row=0, column=0, sticky="nsew")
         # send button
         self.send_button = tkinter.Button(self.entry_frame, text="Envoyer", command=self.send_message)
-        self.send_button.pack()
+        self.send_button.grid(row=0, column=1, sticky="nsew")
         
         self.add_message_in_chat()
 
@@ -75,11 +75,11 @@ class chanels:
         
     
     def affiche_chanels(self):
-        self.chanels_frame = tkinter.Frame(self.windows)
-        self.chanels_frame.pack()
+        self.chanels_frame = tkinter.Frame(self.windows,width=100)
+        self.chanels_frame.grid(row=0, column=0, sticky="nsew")
         for chanel in self.chan.data_list:
             self.chanel_button = tkinter.Button(self.chanels_frame, text=chanel[1], command=lambda chanel_id=chanel[0]: self.change_chanel(chanel_id))
-            self.chanel_button.pack()
+            self.chanel_button.grid(row=chanel[0], column=0, sticky="nsew")
     
     def add_chanel(self):
         add_page = tkinter.Toplevel(self.windows)
@@ -88,10 +88,10 @@ class chanels:
         add_page.configure(bg='#0A3D62')
         
         nom_chanel = tkinter.Entry(add_page, width=30, bg='white', fg='black', borderwidth=0)
-        nom_chanel.pack(pady=25)
+        nom_chanel.grid(row=0, column=0, padx=10, pady=10)
         
         button = tkinter.Button(add_page, text="Add", command=lambda: self.create_chanel(nom_chanel.get()))
-        button.pack()
+        button.grid(row=1, column=0, padx=10, pady=10)
     
     def create_chanel(self,nom):
         self.chan.create(nom)
