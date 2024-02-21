@@ -3,6 +3,8 @@ from Data.message import message
 from Data.User import User
 import tkinter
 import time
+import pyaudio
+import wave
 
 class chanels:
     def __init__(self,user_id):
@@ -44,6 +46,9 @@ class chanels:
         # send button
         self.send_button = tkinter.Button(self.entry_frame, text="Envoyer", command=self.send_message)
         self.send_button.grid(row=0, column=1, sticky="nsew")
+        
+        self.voce_button = tkinter.Button(self.entry_frame, text="Enregistrer", command= lambda :self.enregistrer_message('test.wav', 5))
+        self.voce_button.grid(row=0, column=2, sticky="nsew")
         
         self.add_message_in_chat()
 
@@ -98,3 +103,38 @@ class chanels:
         self.chan.read()
         self.affiche_chanels()
         self.add_chanel.destroy()
+
+
+    # Fonction pour enregistrer le message vocal
+    def enregistrer_message(self,filename, duration):
+        CHUNK = 1024
+        FORMAT = pyaudio.paInt16
+        CHANNELS = 2
+        RATE = 44100
+        RECORD_SECONDS = duration  # Durée de l'enregistrement en secondes
+        
+        audio = pyaudio.PyAudio()
+        
+        stream = audio.open(format=FORMAT, channels=CHANNELS,
+                            rate=RATE, input=True,
+                            frames_per_buffer=CHUNK)
+        
+        frames = []
+        
+        print("Enregistrement en cours...")
+        for i in range(0, int(RATE / CHUNK * RECORD_SECONDS)):
+            data = stream.read(CHUNK)
+            frames.append(data)
+        
+        print("Enregistrement terminé.")
+        
+        stream.stop_stream()
+        stream.close()
+        audio.terminate()
+        
+        wf = wave.open(filename, 'wb')
+        wf.setnchannels(CHANNELS)
+        wf.setsampwidth(audio.get_sample_size(FORMAT))
+        wf.setframerate(RATE)
+        wf.writeframes(b''.join(frames))
+        wf.close()
