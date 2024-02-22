@@ -1,3 +1,5 @@
+import os
+import pygame
 from Data.chanel import chanel
 from Data.message import message
 from Data.User import User
@@ -50,7 +52,7 @@ class chanels:
         self.voce_button = tkinter.Button(self.entry_frame, text="Enregistrer", command= lambda :self.enregistrer_message('test.wav', 5))
         self.voce_button.grid(row=0, column=2, sticky="nsew")
         
-        self.add_message_in_chat()
+        self.add_message_in_chat() 
 
 
     def add_message_in_chat(self):
@@ -58,17 +60,52 @@ class chanels:
         for message in self.mess.get_message_by_id_chanel(self.curent_chanel):
             id = self.mess.get_id_user_by_message(message[0])
             date = self.mess.get_date_by_message(message[0])
+            type = self.mess.get_type_by_message(message[0])
             user_name = self.user_list.get_nom_and_prenom_by_id(id[0][0])
-            self.messages_text.insert(tkinter.END, f"{user_name[0][0]} {user_name[0][1]} ({date[0][0]}): {message[0]}\n")
+            '''print(self.mess.get_id_by_message(message[0]))'''
+            if type[0][0] == 'audio':
+                #if the message is an audio message, display a special icon
+                self.messages_text.insert(tkinter.END, f"{user_name[0][0]} {user_name[0][1]} ({date[0][0]}): [🔊 Audio]\n")
+                play_button = tkinter.Button(self.messages_frame, text="Lire", command=lambda message_id=self.mess.get_id_by_message(message[0]): self.lire_audio(message_id))
+                play_button.grid(row=0, column=1, sticky="nsew")
+            else:
+                #else, display the text normally
+                self.messages_text.insert(tkinter.END, f"{user_name[0][0]} {user_name[0][1]} ({date[0][0]}): {message[0]}\n")
+
+
+    def lire_audio(self, message_id):
+        audio_blob = self.mess.get_message_by_id(message_id[0][0])
+        if audio_blob != []:
+        # Si les données binaires de l'audio sont récupérées avec succès
+            audio_file = f"temp_audio_{message_id}.wav"  # Nom du fichier temporaire pour enregistrer l'audio
+            with open(audio_file, 'wb') as f:
+                f.write(audio_blob[0][0])  # Écriture des données binaires de l'audio dans le fichier temporaire
+
+            # Initialisation de Pygame pour la lecture audio
+            pygame.mixer.init()
+            pygame.mixer.music.load(audio_file)
+            pygame.mixer.music.play()
+
+            # Attendre la fin de la lecture
+            while pygame.mixer.music.get_busy():
+                pygame.time.Clock().tick(10)  # Attendez 10 millisecondes pour éviter de surcharger le processeur
+
+            # Arrêter Pygame après la lecture
+            pygame.mixer.quit()
+
+            # Supprimer le fichier temporaire après la lecture
+            os.remove(audio_file)
+        else:
+            print("Erreur: Données audio non disponibles.")
 
 
     def send_message(self):
         message_content = self.entry_text.get()
         date = time.strftime("%Y-%m-%d %H:%M:%S")
         # save the message in the database
-        self.mess.create(message_content,date,self.curent_chanel,self.curent_user)
+        self.mess.create(message_content,date,self.curent_chanel,self.curent_user,'text')
         # show the message in the text box
-        self.messages_text.insert(tkinter.END, f"{self.user_list.get_nom_and_prenom_by_id(self.curent_user)}: {message_content}\n")
+        self.messages_text.insert(tkinter.END, f"{self.user_list.get_nom_and_prenom_by_id(self.curent_user)} {date}: {message_content}\n")
         # clear the entry
         self.entry_text.delete(0, tkinter.END)
 
@@ -105,13 +142,13 @@ class chanels:
         self.add_chanel.destroy()
 
 
-    # Fonction pour enregistrer le message vocal
+    #fonction for recording the voice message
     def enregistrer_message(self,filename, duration):
         CHUNK = 1024
         FORMAT = pyaudio.paInt16
         CHANNELS = 2
         RATE = 44100
-        RECORD_SECONDS = duration  # Durée de l'enregistrement en secondes
+        RECORD_SECONDS = duration  # time of recording in seconds
         
         audio = pyaudio.PyAudio()
         
@@ -138,3 +175,8 @@ class chanels:
         wf.setframerate(RATE)
         wf.writeframes(b''.join(frames))
         wf.close()
+        
+        with open(filename, "rb") as f:
+            message_blob = f.read()
+            date = time.strftime("%Y-%m-%d %H:%M:%S")
+            self.mess.create(message_blob,date,self.curent_chanel,self.curent_user)

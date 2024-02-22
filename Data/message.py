@@ -6,9 +6,9 @@ class message(DB):
         self.data_liste = []
         self.read()
     
-    def create(self,message,date,id_chanel,id_user):
-        query = "INSERT INTO message (message,date,id_chanel,id_user) VALUES (%s,%s,%s,%s)"
-        param = (message,date,id_chanel,id_user)
+    def create(self,message,date,id_chanel,id_user,type):
+        query = "INSERT INTO message (message,date,id_chanel,id_user,type) VALUES (%s,%s,%s,%s,%s)"
+        param = (message,date,id_chanel,id_user,type)
         self.executeQuery(query,param)
     
     def read(self):
@@ -84,5 +84,10 @@ class message(DB):
     
     def get_date_by_message(self,message):
         query = "SELECT date FROM message WHERE message = %s"
+        param = (message,)
+        return self.fetch(query,param)
+    
+    def get_type_by_message(self,message):
+        query = "SELECT type FROM message WHERE message = %s"
         param = (message,)
         return self.fetch(query,param)
