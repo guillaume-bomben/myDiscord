@@ -1,3 +1,3 @@
-from chanels import chanels
+from chat import chat
 
-chan = chanels(1)
+chan = chat(1)

@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
-from chanels import chanels
+from chat import chat
 from Data.User import User
 
 class Connexion:
@@ -36,4 +36,4 @@ class Connexion:
             messagebox.showerror("Erreur", "Adresse mail ou mot de passe incorrect")
             return
         else:
-            Chan = chanels(id[0][0])
+            Chan = chat(id[0][0])

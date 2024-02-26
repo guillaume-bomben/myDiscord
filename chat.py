@@ -8,7 +8,7 @@ import time
 import pyaudio
 import wave
 
-class chanels:
+class chat:
     def __init__(self,user_id):
         self.windows = tkinter.Tk()
         self.windows.title('Discord chat')
