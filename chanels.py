@@ -16,9 +16,9 @@ class chanels:
         self.curent_chanel = 1
         self.curent_user = user_id
         
-        self.user_list = User('localhost','root','1234','myDiscord')
-        self.chan = chanel('localhost','root','1234','myDiscord')
-        self.mess = message('localhost','root','1234','myDiscord')
+        self.user_list = User()
+        self.chan = chanel()
+        self.mess = message()
         
         self.affiche_chat()
         self.affiche_chanels()
@@ -62,7 +62,6 @@ class chanels:
             date = self.mess.get_date_by_message(message[0])
             type = self.mess.get_type_by_message(message[0])
             user_name = self.user_list.get_nom_and_prenom_by_id(id[0][0])
-            '''print(self.mess.get_id_by_message(message[0]))'''
             if type[0][0] == 'audio':
                 #if the message is an audio message, display a special icon
                 self.messages_text.insert(tkinter.END, f"{user_name[0][0]} {user_name[0][1]} ({date[0][0]}): [🔊 Audio]\n")
