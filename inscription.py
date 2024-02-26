@@ -4,7 +4,7 @@ from tkinter import messagebox
 
 class Inscription:
     def __init__(self, master, on_close_callback=None):
-        self.user_list = User('localhost','root','1234','myDiscord')
+        self.user_list = User()
         self.master = master
         self.on_close_callback = on_close_callback  # Store callback
         self.master.title("Page d'Inscription")

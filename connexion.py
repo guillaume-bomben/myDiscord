@@ -5,7 +5,7 @@ from Data.User import User
 
 class Connexion:
     def __init__(self, master, switch_function):
-        self.user_list = User('localhost','root','1234','myDiscord')
+        self.user_list = User()
         self.master = master
         self.switch_function = switch_function
         self.master.title("Page de Connexion")
