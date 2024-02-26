@@ -1,8 +1,8 @@
 from Data.DB import DB
 
 class role(DB):
-    def __init__(self, host, user, password, database):
-        super().__init__(host, user, password, database)
+    def __init__(self):
+        super().__init__()
         self.data_liste = []
         self.read()
     
