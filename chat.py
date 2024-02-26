@@ -15,6 +15,7 @@ class chat:
         
         self.curent_chanel = 1
         self.curent_user = user_id
+        self.audio_buttons = {}
         
         self.user_list = User()
         self.chan = chanel()
@@ -32,14 +33,18 @@ class chat:
         #create a frame to contain the messages
         self.messages_frame = tkinter.Frame(self.windows)
         self.messages_frame.grid(row=0, column=1, sticky="nsew")
+        
         #create a text box to display the messages
-        self.messages_text = tkinter.Text(self.messages_frame, width=150, height=25)
+        self.messages_text = tkinter.Text(self.messages_frame, height=20, width=50)
         self.messages_text.grid(row=0, column=0, sticky="nsew")
+        
         #create a scrollbar for the text box
         self.scrollbar = tkinter.Scrollbar(self.messages_frame, command=self.messages_text.yview)
-        self.scrollbar.grid(row=0, column=1, sticky="nsew")
-        # set text widget to use vertical scrollbar
+        self.scrollbar.grid(row=0, column=2, sticky="nsew")
+
         self.messages_text.config(yscrollcommand=self.scrollbar.set)
+        
+        
         #create a frame to contain the entry and the button
         self.entry_frame = tkinter.Frame(self.windows)
         self.entry_frame.grid(row=1, column=1, sticky="nsew")
@@ -47,7 +52,7 @@ class chat:
         self.entry_text.grid(row=0, column=0, sticky="nsew")
         # send button
         self.send_button = tkinter.Button(self.entry_frame, text="Envoyer", command=self.send_message)
-        self.send_button.grid(row=0, column=1, sticky="nsew")
+        self.send_button.grid(row=0, column=1, sticky="ew")
         
         self.voce_button = tkinter.Button(self.entry_frame, text="Enregistrer", command= lambda :self.enregistrer_message('test.wav', 5))
         self.voce_button.grid(row=0, column=2, sticky="nsew")
@@ -64,12 +69,19 @@ class chat:
             user_name = self.user_list.get_nom_and_prenom_by_id(id[0][0])
             if type[0][0] == 'audio':
                 #if the message is an audio message, display a special icon
-                self.messages_text.insert(tkinter.END, f"{user_name[0][0]} {user_name[0][1]} ({date[0][0]}): [🔊 Audio]\n")
-                play_button = tkinter.Button(self.messages_frame, text="Lire", command=lambda message_id=self.mess.get_id_by_message(message[0]): self.lire_audio(message_id))
-                play_button.grid(row=0, column=1, sticky="nsew")
+                self.messages_text.insert(tkinter.END, f"{user_name[0][0]} {user_name[0][1]} ({date[0][0]}): \n")
+                play_button = tkinter.Button(self.messages_frame ,text="Lire", command=lambda message_id=self.mess.get_id_by_message(message[0]): self.lire_audio(message_id))
+                play_button.grid(row=0, column=3, sticky="nsew")
+                
+                
+                if message[0] not in self.audio_buttons:
+                    self.audio_buttons[message[0]] = [play_button]
+                else:
+                    self.audio_buttons[message[0]].append(play_button)
             else:
                 #else, display the text normally
                 self.messages_text.insert(tkinter.END, f"{user_name[0][0]} {user_name[0][1]} ({date[0][0]}): {message[0]}\n")
+        print(self.audio_buttons)
 
 
     def lire_audio(self, message_id):
@@ -109,9 +121,19 @@ class chat:
         self.entry_text.delete(0, tkinter.END)
 
 
+    def reset_audio_buttons(self):
+        # Supprimer les boutons de lecture audio existants
+        for button_list in self.audio_buttons.values():
+            for button in button_list:
+                button.destroy()
+        # Réinitialiser le dictionnaire des boutons de lecture audio
+        self.audio_buttons = {}
+
+
     def change_chanel(self,chanel_id):
         self.curent_chanel = chanel_id
         self.messages_text.delete(1.0, tkinter.END)
+        self.reset_audio_buttons()
         self.add_message_in_chat()
         
     
