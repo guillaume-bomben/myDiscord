@@ -1,16 +1,22 @@
+import sys
 from Data.User import User
 import tkinter as tk
 from tkinter import messagebox
 
 class Inscription:
-    def __init__(self, master, on_close_callback=None):
+    def __init__(self):
         self.user_list = User()
-        self.master = master
-        self.on_close_callback = on_close_callback  # Store callback
+        self.master = tk.Tk()
         self.master.title("Page d'Inscription")
         self.master.configure(bg='#0A3D62')
+        self.master.protocol("WM_DELETE_WINDOW", self.on_close)
+
+        
+        self.connexion = False
 
         self.setup_widgets()
+        
+        self.master.mainloop()
 
     def setup_widgets(self):
         frame = tk.Frame(self.master, bg='#0A3D62')
@@ -39,8 +45,9 @@ class Inscription:
             return
         else:
             self.user_list.create(nom, prenom, email, password)
-
+            self.master.destroy()
+            self.connexion = True
+            
     def on_close(self):
-        if self.on_close_callback:
-            self.on_close_callback()
         self.master.destroy()
+        sys.exit(0)
