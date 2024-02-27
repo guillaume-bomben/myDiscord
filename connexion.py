@@ -1,17 +1,21 @@
+import sys
 import tkinter as tk
 from tkinter import messagebox
-from chat import chat
 from Data.User import User
 
 class Connexion:
-    def __init__(self, master, switch_function):
+    def __init__(self):
         self.user_list = User()
-        self.master = master
-        self.switch_function = switch_function
+        self.master = tk.Tk()
         self.master.title("Page de Connexion")
         self.master.configure(bg='#0A3D62')
+        self.master.protocol("WM_DELETE_WINDOW", self.on_close)
+        
+        self.chat = False
+        self.inscription = False
 
         self.setup_widgets()
+        self.master.mainloop()
 
     def setup_widgets(self):
         frame = tk.Frame(self.master, bg='#0A3D62')
@@ -26,7 +30,7 @@ class Connexion:
         self.mot_de_passe_connexion.grid(row=1, column=1, pady=10)
 
         tk.Button(frame, text="Connexion", command=self.soumettre_connexion, width=20, bg='white', fg='black').grid(row=2, column=0, pady=10, sticky=tk.W)
-        tk.Button(frame, text="S'inscrire", command=lambda: self.switch_function(self.master), width=20, bg='white', fg='black').grid(row=2, column=1, pady=10, sticky=tk.E)
+        tk.Button(frame, text="S'inscrire", command=self.inscription_page, width=20, bg='white', fg='black').grid(row=2, column=1, pady=10, sticky=tk.E)
 
     def soumettre_connexion(self):
         email = self.adresse_mail_connexion.get()
@@ -36,4 +40,15 @@ class Connexion:
             messagebox.showerror("Erreur", "Adresse mail ou mot de passe incorrect")
             return
         else:
-            Chan = chat(id[0][0])
+            self.id = id[0][0]
+            self.master.destroy()
+            self.chat = True
+
+
+    def inscription_page(self):
+        self.master.destroy()
+        self.inscription = True
+        
+    def on_close(self):
+        self.master.destroy()
+        sys.exit(0)
