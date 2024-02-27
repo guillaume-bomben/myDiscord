@@ -1,4 +1,5 @@
 import os
+import sys
 import pygame
 from Data.chanel import chanel
 from Data.message import message
@@ -13,6 +14,8 @@ class chat:
     def __init__(self,user_id):
         self.windows = tkinter.Tk()
         self.windows.title('Discord chat')
+        self.windows.protocol("WM_DELETE_WINDOW", self.on_close)
+        self.connexion = True
         
         self.curent_chanel = 1
         self.curent_user = user_id
@@ -60,6 +63,9 @@ class chat:
         
         self.emoji_button = tkinter.Button(self.entry_frame, text="Liste des emojis", command=self.list_emojis)
         self.emoji_button.grid(row=0, column=4, sticky="nsew")
+        
+        self.disconnect_button = tkinter.Button(self.entry_frame, text="Disconnect", command=self.disconnected)
+        self.disconnect_button.grid(row=0, column=5, sticky="nsew")
         
         self.add_message_in_chat() 
 
@@ -199,3 +205,11 @@ class chat:
 
     def add_emoji(self,emoji_id):
         self.entry_text.insert(tkinter.END, ["😁","😘","😕","🤬","🤢","😈"][emoji_id])
+
+    def disconnected(self):
+        self.windows.destroy()
+        self.connexion = False
+
+    def on_close(self):
+        self.windows.destroy()
+        sys.exit(0)
