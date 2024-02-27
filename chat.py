@@ -7,6 +7,7 @@ import tkinter
 import time
 import pyaudio
 import wave
+import emoji
 
 class chat:
     def __init__(self,user_id):
@@ -58,6 +59,9 @@ class chat:
         self.audio_buttons = tkinter.Button(self.entry_frame, text="Audio list", command=self.audio_list_window)
         self.audio_buttons.grid(row=0, column=3, sticky="nsew")
         
+        self.emoji_button = tkinter.Button(self.entry_frame, text="Liste des emojis", command=self.list_emojis)
+        self.emoji_button.grid(row=0, column=4, sticky="nsew")
+        
         self.add_message_in_chat() 
 
 
@@ -74,7 +78,8 @@ class chat:
                 self.messages_text.insert(tkinter.END, f"{user_name[0][0]} {user_name[0][1]} ({date[0][0]}): [🔊 Audio {audio_index}]\n")
                 audio_index += 1
             else:
-                self.messages_text.insert(tkinter.END, f"{user_name[0][0]} {user_name[0][1]} ({date[0][0]}): {message[0]}\n")
+                message_content = emoji.emojize(message[0].decode('utf-8'))
+                self.messages_text.insert(tkinter.END, f"{user_name[0][0]} {user_name[0][1]} ({date[0][0]}): {message_content}\n")
 
 
     def lire_audio(self, message_id):
@@ -187,3 +192,19 @@ class chat:
                 audio_button.grid(row=audio_index, column=0, sticky="nsew")
                 audio_index += 1
         audio_list.mainloop()
+
+
+    def list_emojis(self):
+        list_emojis = tkinter.Toplevel(self.windows)
+        list_emojis.title('Liste des emojis')
+        list_emojis.geometry('300x100')
+        list_emojis.configure(bg='#0A3D62')
+        
+        list_emojis_frame = tkinter.Frame(list_emojis,width=100)
+        list_emojis_frame.grid(row=0, column=0, sticky="nsew")
+        for id,emoji in enumerate(["😁","😘","😕","🤬","🤢","😈"]):
+            emoji_button = tkinter.Button(list_emojis_frame, text=emoji, command=lambda emoji_id=id: self.add_emoji(emoji_id))
+            emoji_button.grid(row=id%4, column=id//4, sticky="nsew")
+    
+    def add_emoji(self,emoji_id):
+        self.entry_text.insert(tkinter.END, ["😁","😘","😕","🤬","🤢","😈"][emoji_id])
