@@ -29,7 +29,6 @@ class chat:
         
         self.windows.mainloop()
 
-
     def affiche_chat(self):
         #create a frame to contain the messages
         self.messages_frame = tkinter.Frame(self.windows)
@@ -64,7 +63,6 @@ class chat:
         
         self.add_message_in_chat() 
 
-
     def add_message_in_chat(self):
         # insert the messages into the text box
         audio_index = 1
@@ -75,12 +73,11 @@ class chat:
             user_name = self.user_list.get_nom_and_prenom_by_id(id[0][0])
             if type[0][0] == 'audio':
                 #if the message is an audio message, display a special icon
-                self.messages_text.insert(tkinter.END, f"{user_name[0][0]} {user_name[0][1]} ({date[0][0]}): [🔊 Audio {audio_index}]\n")
+                self.messages_text.insert(tkinter.END, f"({date[0][0]}) {user_name[0][0]} {user_name[0][1]}: [🔊 Audio {audio_index}]\n")
                 audio_index += 1
             else:
                 message_content = emoji.emojize(message[0].decode('utf-8'))
-                self.messages_text.insert(tkinter.END, f"{user_name[0][0]} {user_name[0][1]} ({date[0][0]}): {message_content}\n")
-
+                self.messages_text.insert(tkinter.END, f"({date[0][0]}) {user_name[0][0]} {user_name[0][1]}: {message_content}\n")
 
     def lire_audio(self, message_id):
         audio_blob = self.mess.get_message_by_id(message_id[0][0])
@@ -98,7 +95,6 @@ class chat:
         else:
             print("Erreur: Données audio non disponibles.")
 
-
     def send_message(self):
         message_content = self.entry_text.get()
         date = time.strftime("%Y-%m-%d %H:%M:%S")
@@ -107,12 +103,10 @@ class chat:
         self.messages_text.insert(tkinter.END, f"{self.user_list.get_nom_and_prenom_by_id(self.curent_user)} {date}: {message_content}\n")
         self.entry_text.delete(0, tkinter.END) # clear the entry
 
-
     def change_chanel(self,chanel_id):
         self.curent_chanel = chanel_id
         self.messages_text.delete(1.0, tkinter.END)
         self.add_message_in_chat()
-
 
     def affiche_chanels(self):
         self.chanels_frame = tkinter.Frame(self.windows,width=100)
@@ -120,7 +114,7 @@ class chat:
         for chanel in self.chan.data_list:
             self.chanel_button = tkinter.Button(self.chanels_frame, text=chanel[1], command=lambda chanel_id=chanel[0]: self.change_chanel(chanel_id))
             self.chanel_button.grid(row=chanel[0], column=0, sticky="nsew")
-    
+
     def add_chanel(self):
         add_page = tkinter.Toplevel(self.windows)
         add_page.title('Add chanel')
@@ -138,7 +132,6 @@ class chat:
         self.chan.read()
         self.affiche_chanels()
         self.add_chanel.destroy()
-
 
     def enregistrer_message(self,filename, duration):
         CHUNK = 1024
@@ -174,7 +167,6 @@ class chat:
             date = time.strftime("%Y-%m-%d %H:%M:%S")
             self.mess.create(message_blob,date,self.curent_chanel,self.curent_user)
 
-
     def audio_list_window(self):
         audio_list = tkinter.Toplevel(self.windows)
         audio_list.title('Audio list')
@@ -193,7 +185,6 @@ class chat:
                 audio_index += 1
         audio_list.mainloop()
 
-
     def list_emojis(self):
         list_emojis = tkinter.Toplevel(self.windows)
         list_emojis.title('Liste des emojis')
@@ -205,6 +196,6 @@ class chat:
         for id,emoji in enumerate(["😁","😘","😕","🤬","🤢","😈"]):
             emoji_button = tkinter.Button(list_emojis_frame, text=emoji, command=lambda emoji_id=id: self.add_emoji(emoji_id))
             emoji_button.grid(row=id%4, column=id//4, sticky="nsew")
-    
+
     def add_emoji(self,emoji_id):
         self.entry_text.insert(tkinter.END, ["😁","😘","😕","🤬","🤢","😈"][emoji_id])
