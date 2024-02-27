@@ -35,7 +35,7 @@ class chat:
         self.messages_frame.grid(row=0, column=1, sticky="nsew")
         
         #create a text box to display the messages
-        self.messages_text = tkinter.Text(self.messages_frame, height=20, width=50)
+        self.messages_text = tkinter.Text(self.messages_frame, height=20, width=150)
         self.messages_text.grid(row=0, column=0, sticky="nsew")
         
         #create a scrollbar for the text box
@@ -43,7 +43,6 @@ class chat:
         self.scrollbar.grid(row=0, column=2, sticky="nsew")
 
         self.messages_text.config(yscrollcommand=self.scrollbar.set)
-        
         
         #create a frame to contain the entry and the button
         self.entry_frame = tkinter.Frame(self.windows)
@@ -57,11 +56,15 @@ class chat:
         self.voce_button = tkinter.Button(self.entry_frame, text="Enregistrer", command= lambda :self.enregistrer_message('test.wav', 5))
         self.voce_button.grid(row=0, column=2, sticky="nsew")
         
+        self.audio_buttons = tkinter.Button(self.entry_frame, text="Audio list", command=self.audio_list_window)
+        self.audio_buttons.grid(row=0, column=3, sticky="nsew")
+        
         self.add_message_in_chat() 
 
 
     def add_message_in_chat(self):
         # insert the messages into the text box
+        audio_index = 1
         for message in self.mess.get_message_by_id_chanel(self.curent_chanel):
             id = self.mess.get_id_user_by_message(message[0])
             date = self.mess.get_date_by_message(message[0])
@@ -69,19 +72,11 @@ class chat:
             user_name = self.user_list.get_nom_and_prenom_by_id(id[0][0])
             if type[0][0] == 'audio':
                 #if the message is an audio message, display a special icon
-                self.messages_text.insert(tkinter.END, f"{user_name[0][0]} {user_name[0][1]} ({date[0][0]}): \n")
-                play_button = tkinter.Button(self.messages_frame ,text="Lire", command=lambda message_id=self.mess.get_id_by_message(message[0]): self.lire_audio(message_id))
-                play_button.grid(row=0, column=3, sticky="nsew")
-                
-                
-                if message[0] not in self.audio_buttons:
-                    self.audio_buttons[message[0]] = [play_button]
-                else:
-                    self.audio_buttons[message[0]].append(play_button)
+                self.messages_text.insert(tkinter.END, f"{user_name[0][0]} {user_name[0][1]} ({date[0][0]}): [🔊 Audio {audio_index}]\n")
+                audio_index += 1
             else:
                 #else, display the text normally
                 self.messages_text.insert(tkinter.END, f"{user_name[0][0]} {user_name[0][1]} ({date[0][0]}): {message[0]}\n")
-        print(self.audio_buttons)
 
 
     def lire_audio(self, message_id):
@@ -91,19 +86,15 @@ class chat:
             audio_file = f"temp_audio_{message_id}.wav"  # Nom du fichier temporaire pour enregistrer l'audio
             with open(audio_file, 'wb') as f:
                 f.write(audio_blob[0][0])  # Écriture des données binaires de l'audio dans le fichier temporaire
-
             # Initialisation de Pygame pour la lecture audio
             pygame.mixer.init()
             pygame.mixer.music.load(audio_file)
             pygame.mixer.music.play()
-
             # Attendre la fin de la lecture
             while pygame.mixer.music.get_busy():
                 pygame.time.Clock().tick(10)  # Attendez 10 millisecondes pour éviter de surcharger le processeur
-
             # Arrêter Pygame après la lecture
             pygame.mixer.quit()
-
             # Supprimer le fichier temporaire après la lecture
             os.remove(audio_file)
         else:
@@ -113,30 +104,18 @@ class chat:
     def send_message(self):
         message_content = self.entry_text.get()
         date = time.strftime("%Y-%m-%d %H:%M:%S")
-        # save the message in the database
-        self.mess.create(message_content,date,self.curent_chanel,self.curent_user,'text')
+        self.mess.create(message_content,date,self.curent_chanel,self.curent_user,'text') # save the message in the database
         # show the message in the text box
         self.messages_text.insert(tkinter.END, f"{self.user_list.get_nom_and_prenom_by_id(self.curent_user)} {date}: {message_content}\n")
-        # clear the entry
-        self.entry_text.delete(0, tkinter.END)
-
-
-    def reset_audio_buttons(self):
-        # Supprimer les boutons de lecture audio existants
-        for button_list in self.audio_buttons.values():
-            for button in button_list:
-                button.destroy()
-        # Réinitialiser le dictionnaire des boutons de lecture audio
-        self.audio_buttons = {}
+        self.entry_text.delete(0, tkinter.END) # clear the entry
 
 
     def change_chanel(self,chanel_id):
         self.curent_chanel = chanel_id
         self.messages_text.delete(1.0, tkinter.END)
-        self.reset_audio_buttons()
         self.add_message_in_chat()
-        
-    
+
+
     def affiche_chanels(self):
         self.chanels_frame = tkinter.Frame(self.windows,width=100)
         self.chanels_frame.grid(row=0, column=0, sticky="nsew")
@@ -201,3 +180,22 @@ class chat:
             message_blob = f.read()
             date = time.strftime("%Y-%m-%d %H:%M:%S")
             self.mess.create(message_blob,date,self.curent_chanel,self.curent_user)
+            
+    
+    def audio_list_window(self):
+        audio_list = tkinter.Toplevel(self.windows)
+        audio_list.title('Audio list')
+        audio_list.geometry('300x100')
+        audio_list.configure(bg='#0A3D62')
+        
+        audio_list_frame = tkinter.Frame(audio_list,width=100)
+        audio_list_frame.grid(row=0, column=0, sticky="nsew")
+        audio_index = 1
+        for message in self.mess.get_message_by_id_chanel(self.curent_chanel):
+            type = self.mess.get_type_by_message(message[0])
+            if type[0][0] == 'audio':
+                #if the message is an audio message, display a special icon
+                audio_button = tkinter.Button(audio_list_frame, text=f"Audio {audio_index}", command=lambda message_id=self.mess.get_id_by_message(message[0]): self.lire_audio(message_id))
+                audio_button.grid(row=audio_index, column=0, sticky="nsew")
+                audio_index += 1
+        audio_list.mainloop()
