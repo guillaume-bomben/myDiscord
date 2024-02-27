@@ -132,7 +132,7 @@ class chat:
         
         button = tkinter.Button(add_page, text="Add", command=lambda: self.create_chanel(nom_chanel.get()))
         button.grid(row=1, column=0, padx=10, pady=10)
-    
+
     def create_chanel(self,nom):
         self.chan.create(nom)
         self.chan.read()
@@ -185,7 +185,6 @@ class chat:
         for message in self.mess.get_message_by_id_chanel(self.curent_chanel):
             type = self.mess.get_type_by_message(message[0])
             if type[0][0] == 'audio':
-                #if the message is an audio message, display a special icon
                 audio_button = tkinter.Button(audio_list_frame, text=f"Audio {audio_index}", command=lambda message_id=self.mess.get_id_by_message(message[0]): self.lire_audio(message_id))
                 audio_button.grid(row=audio_index, column=0, sticky="nsew")
                 audio_index += 1
