@@ -41,7 +41,6 @@ class chat:
         #create a scrollbar for the text box
         self.scrollbar = tkinter.Scrollbar(self.messages_frame, command=self.messages_text.yview)
         self.scrollbar.grid(row=0, column=2, sticky="nsew")
-
         self.messages_text.config(yscrollcommand=self.scrollbar.set)
         
         #create a frame to contain the entry and the button
@@ -75,27 +74,21 @@ class chat:
                 self.messages_text.insert(tkinter.END, f"{user_name[0][0]} {user_name[0][1]} ({date[0][0]}): [🔊 Audio {audio_index}]\n")
                 audio_index += 1
             else:
-                #else, display the text normally
                 self.messages_text.insert(tkinter.END, f"{user_name[0][0]} {user_name[0][1]} ({date[0][0]}): {message[0]}\n")
 
 
     def lire_audio(self, message_id):
         audio_blob = self.mess.get_message_by_id(message_id[0][0])
         if audio_blob != []:
-        # Si les données binaires de l'audio sont récupérées avec succès
-            audio_file = f"temp_audio_{message_id}.wav"  # Nom du fichier temporaire pour enregistrer l'audio
+            audio_file = f"temp_audio_{message_id}.wav"
             with open(audio_file, 'wb') as f:
-                f.write(audio_blob[0][0])  # Écriture des données binaires de l'audio dans le fichier temporaire
-            # Initialisation de Pygame pour la lecture audio
+                f.write(audio_blob[0][0])  
             pygame.mixer.init()
             pygame.mixer.music.load(audio_file)
             pygame.mixer.music.play()
-            # Attendre la fin de la lecture
             while pygame.mixer.music.get_busy():
-                pygame.time.Clock().tick(10)  # Attendez 10 millisecondes pour éviter de surcharger le processeur
-            # Arrêter Pygame après la lecture
+                pygame.time.Clock().tick(10)  
             pygame.mixer.quit()
-            # Supprimer le fichier temporaire après la lecture
             os.remove(audio_file)
         else:
             print("Erreur: Données audio non disponibles.")
@@ -149,15 +142,11 @@ class chat:
         CHANNELS = 2
         RATE = 44100
         RECORD_SECONDS = duration  # time of recording in seconds
-        
         audio = pyaudio.PyAudio()
-        
         stream = audio.open(format=FORMAT, channels=CHANNELS,
                             rate=RATE, input=True,
                             frames_per_buffer=CHUNK)
-        
         frames = []
-        
         print("Enregistrement en cours...")
         for i in range(0, int(RATE / CHUNK * RECORD_SECONDS)):
             data = stream.read(CHUNK)
@@ -180,8 +169,8 @@ class chat:
             message_blob = f.read()
             date = time.strftime("%Y-%m-%d %H:%M:%S")
             self.mess.create(message_blob,date,self.curent_chanel,self.curent_user)
-            
-    
+
+
     def audio_list_window(self):
         audio_list = tkinter.Toplevel(self.windows)
         audio_list.title('Audio list')
