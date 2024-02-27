@@ -135,13 +135,12 @@ class chat:
         self.add_chanel.destroy()
 
 
-    #fonction for recording the voice message
     def enregistrer_message(self,filename, duration):
         CHUNK = 1024
         FORMAT = pyaudio.paInt16
         CHANNELS = 2
         RATE = 44100
-        RECORD_SECONDS = duration  # time of recording in seconds
+        RECORD_SECONDS = duration
         audio = pyaudio.PyAudio()
         stream = audio.open(format=FORMAT, channels=CHANNELS,
                             rate=RATE, input=True,
