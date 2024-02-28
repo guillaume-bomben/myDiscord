@@ -30,6 +30,7 @@ class chat:
         
         self.affiche_chat()
         self.affiche_chanels()
+        self.run_function_periodically()
         
         tkinter.Button(self.windows, text="Add Chanel", command=self.add_chanel).grid(row=1, column=0, sticky="nsew")
         
@@ -77,7 +78,6 @@ class chat:
         self.add_message_in_chat() 
 
     def add_message_in_chat(self):
-        # insert the messages into the text box
         audio_index = 1
         for message in self.mess.get_message_by_id_chanel(self.curent_chanel):
             id = self.mess.get_id_user_by_message(message[0])
@@ -215,6 +215,11 @@ class chat:
 
     def add_emoji(self,emoji_id):
         self.entry_text.insert(tkinter.END, ["😁","😘","😕","🤬","🤢","😈"][emoji_id])
+
+    def run_function_periodically(self):
+        self.messages_text.delete(1.0, tkinter.END)
+        self.affiche_chat()
+        self.windows.after(10000, self.run_function_periodically)
 
     def disconnected(self):
         self.windows.destroy()
