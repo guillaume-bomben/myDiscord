@@ -51,7 +51,6 @@ class admin_page:
             id_user = self.user_list.get_id_by_nom(self.list_user_box.get().split(" ")[0])
             id_role = self.role_list.get_id_by_nom(self.list_role_box.get())
             self.chan_user_info.update_id_role_by_id_user_and_id_chanel(id_user[0][0],self.idchan,id_role[0][0])
-            print("Role updated")
     
     def on_select_user(self,event):
         selected_option = self.list_user_box.get()
