@@ -70,8 +70,9 @@ class chat:
         self.disconnect_button = tkinter.Button(self.entry_frame, text="Disconnect", command=self.disconnected)
         self.disconnect_button.grid(row=0, column=5, sticky="nsew")
         
-        self.admin_button = tkinter.Button(self.entry_frame, text="Admin", command=lambda: admin_page(self.windows,self.curent_chanel))
-        self.admin_button.grid(row=0, column=6, sticky="nsew")
+        if self.chan_user.get_id_role_by_id_user_and_id_chanel(self.curent_user,self.curent_chanel)[0][0] == 1:
+            self.admin_button = tkinter.Button(self.entry_frame, text="Admin", command=lambda: admin_page(self.windows,self.curent_chanel))
+            self.admin_button.grid(row=0, column=6, sticky="nsew")
         
         self.add_message_in_chat() 
 
@@ -118,7 +119,7 @@ class chat:
     def change_chanel(self,chanel_id):
         self.curent_chanel = chanel_id
         self.messages_text.delete(1.0, tkinter.END)
-        self.add_message_in_chat()
+        self.affiche_chat()
 
     def affiche_chanels(self):
         self.chanels_frame = tkinter.Frame(self.windows,width=100)
