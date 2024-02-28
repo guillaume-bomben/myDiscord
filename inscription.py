@@ -1,11 +1,15 @@
 import sys
 from Data.User import User
+from Data.chan_user import chan_user
+from Data.chanel import chanel
 import tkinter as tk
 from tkinter import messagebox
 
 class Inscription:
     def __init__(self):
         self.user_list = User()
+        self.chan_user = chan_user()
+        self.chan = chanel()
         self.master = tk.Tk()
         self.master.title("Page d'Inscription")
         self.master.configure(bg='#0A3D62')
@@ -45,6 +49,8 @@ class Inscription:
             return
         else:
             self.user_list.create(nom, prenom, email, password)
+            for chan in self.chan.data_list:
+                self.chan_user.create(chan[0],self.user_list.get_id_by_email(email)[0][0],2)
             self.master.destroy()
             self.connexion = True
             
