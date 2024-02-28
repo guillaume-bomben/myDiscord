@@ -4,6 +4,7 @@ import pygame
 from Data.chanel import chanel
 from Data.message import message
 from Data.User import User
+from admin_page import admin_page
 import tkinter
 import time
 import pyaudio
@@ -66,6 +67,9 @@ class chat:
         
         self.disconnect_button = tkinter.Button(self.entry_frame, text="Disconnect", command=self.disconnected)
         self.disconnect_button.grid(row=0, column=5, sticky="nsew")
+        
+        self.admin_button = tkinter.Button(self.entry_frame, text="Admin", command=lambda: admin_page(self.windows,self.curent_chanel))
+        self.admin_button.grid(row=0, column=6, sticky="nsew")
         
         self.add_message_in_chat() 
 
