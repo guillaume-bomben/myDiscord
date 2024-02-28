@@ -4,6 +4,7 @@ import pygame
 from Data.chanel import chanel
 from Data.message import message
 from Data.User import User
+from Data.chan_user import chan_user
 from admin_page import admin_page
 import tkinter
 import time
@@ -25,6 +26,7 @@ class chat:
         self.user_list = User()
         self.chan = chanel()
         self.mess = message()
+        self.chan_user = chan_user()
         
         self.affiche_chat()
         self.affiche_chanels()
@@ -141,7 +143,11 @@ class chat:
         self.chan.create(nom)
         self.chan.read()
         self.affiche_chanels()
-        self.add_chanel.destroy()
+        id_chan = self.chan.get_id_by_nom(nom)
+        self.chan_user.create(id_chan[0][0],self.curent_user,1)
+        for user in self.user_list.data_list:
+            if user[0] != self.curent_user:
+                self.chan_user.create(id_chan[0][0],user[0],2)
 
     def enregistrer_message(self,filename, duration):
         CHUNK = 1024
