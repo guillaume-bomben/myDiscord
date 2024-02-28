@@ -36,3 +36,13 @@ class chan_user(DB):
         query = "UPDATE _user SET id_role = %s WHERE id = %s"
         param = (id_role,id)
         self.executeQuery(query,param)
+    
+    def update_id_role_by_id_user_and_id_chanel(self,id_user,id_chanel,id_role):
+        query = "UPDATE chan_user SET id_role = %s WHERE id_user = %s AND id_chanel = %s"
+        param = (id_role,id_user,id_chanel)
+        self.executeQuery(query,param)
+        
+    def get_id_role_by_id_user_and_id_chanel(self,id_user,id_chanel):
+        query = "SELECT id_role FROM chan_user WHERE id_user = %s AND id_chanel = %s"
+        param = (id_user,id_chanel)
+        return self.fetch(query,param)
