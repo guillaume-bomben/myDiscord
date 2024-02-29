@@ -37,9 +37,9 @@ class chan_user(DB):
         param = (id_role,id)
         self.executeQuery(query,param)
         
-    def update_nb_mess(self,id,nb_mess):
-        query = "UPDATE chan_user SET nb_mess = %s WHERE id = %s"
-        param = (nb_mess,id)
+    def update_nb_mess(self,nb_mess,id_user,id_chanel):
+        query = "UPDATE chan_user SET nb_mess = %s WHERE id_user = %s AND id_chanel = %s"
+        param = (nb_mess,id_user,id_chanel)
         self.executeQuery(query,param)
     
     def update_id_role_by_id_user_and_id_chanel(self,id_user,id_chanel,id_role):

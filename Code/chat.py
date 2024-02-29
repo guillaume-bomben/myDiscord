@@ -79,7 +79,9 @@ class chat:
 
     def add_message_in_chat(self):
         self.audio_index = 1
+        self.nb_messages = 0
         for message in self.mess.get_message_by_id_chanel(self.curent_chanel):
+            self.nb_messages += 1
             id = self.mess.get_id_user_by_message(message[0])
             date = self.mess.get_date_by_message(message[0])
             type = self.mess.get_type_by_message(message[0])
@@ -91,6 +93,7 @@ class chat:
             else:
                 message_content = emoji.emojize(message[0].decode('utf-8'))
                 self.messages_text.insert(tkinter.END, f"({date[0][0]}) {user_name[0][0]} {user_name[0][1]}: {message_content}\n")
+        self.chan_user.update_nb_mess(self.nb_messages,self.curent_user,self.curent_chanel)
 
     def lire_audio(self, message_id):
         audio_blob = self.mess.get_message_by_id(message_id[0][0])
