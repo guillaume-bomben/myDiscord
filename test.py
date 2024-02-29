@@ -1,3 +1,3 @@
 from Code.chat import chat
 
-chat = chat(3)
+chat = chat(1)

@@ -221,10 +221,20 @@ class chat:
 
     def add_emoji(self,emoji_id):
         self.entry_text.insert(tkinter.END, ["😁","😘","😕","🤬","🤢","😈"][emoji_id])
+        
+    
+    def verify_nb_messages(self):
+        for chan in self.chan.data_list:
+            nb = self.chan_user.get_nb_mess_by_id_user_and_id_chanel(self.curent_user,chan[0])
+            nbt_message = len(self.mess.get_message_by_id_chanel(chan[0]))
+            print(nb[0][0],nbt_message)
+            if  nb[0][0] != nbt_message:
+                print("Nouveau message dans channel",chan[1])
 
     def run_function_periodically(self):
         self.messages_text.delete(1.0, tkinter.END)
         self.add_message_in_chat()
+        self.verify_nb_messages()
         self.windows.after(10000, self.run_function_periodically)
 
     def disconnected(self):

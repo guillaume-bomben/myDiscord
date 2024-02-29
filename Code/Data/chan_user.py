@@ -51,3 +51,8 @@ class chan_user(DB):
         query = "SELECT id_role FROM chan_user WHERE id_user = %s AND id_chanel = %s"
         param = (id_user,id_chanel)
         return self.fetch(query,param)
+
+    def get_nb_mess_by_id_user_and_id_chanel(self,id_user,id_chanel):
+        query = "SELECT nb_mess FROM chan_user WHERE id_user = %s AND id_chanel = %s"
+        param = (id_user,id_chanel)
+        return self.fetch(query,param)
