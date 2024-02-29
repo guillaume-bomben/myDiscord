@@ -78,7 +78,7 @@ class chat:
         self.add_message_in_chat() 
 
     def add_message_in_chat(self):
-        audio_index = 1
+        self.audio_index = 1
         for message in self.mess.get_message_by_id_chanel(self.curent_chanel):
             id = self.mess.get_id_user_by_message(message[0])
             date = self.mess.get_date_by_message(message[0])
@@ -86,8 +86,8 @@ class chat:
             user_name = self.user_list.get_nom_and_prenom_by_id(id[0][0])
             if type[0][0] == 'audio':
                 #if the message is an audio message, display a special icon
-                self.messages_text.insert(tkinter.END, f"({date[0][0]}) {user_name[0][0]} {user_name[0][1]}: [🔊 Audio {audio_index}]\n")
-                audio_index += 1
+                self.messages_text.insert(tkinter.END, f"({date[0][0]}) {user_name[0][0]} {user_name[0][1]}: [🔊 Audio {self.audio_index}]\n")
+                self.audio_index += 1
             else:
                 message_content = emoji.emojize(message[0].decode('utf-8'))
                 self.messages_text.insert(tkinter.END, f"({date[0][0]}) {user_name[0][0]} {user_name[0][1]}: {message_content}\n")
@@ -184,6 +184,8 @@ class chat:
             message_blob = f.read()
             date = time.strftime("%Y-%m-%d %H:%M:%S")
             self.mess.create(message_blob,date,self.curent_chanel,self.curent_user,'audio')
+        self.messages_text.delete(1.0, tkinter.END)
+        self.add_message_in_chat()
 
     def audio_list_window(self):
         audio_list = tkinter.Toplevel(self.windows)
