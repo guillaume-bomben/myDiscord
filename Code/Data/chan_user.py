@@ -6,9 +6,9 @@ class chan_user(DB):
         self.data_liste = []
         self.read()
     
-    def create(self,id_chanel,id_user,id_role):
-        query = "INSERT INTO chan_user (id_chanel,id_user,id_role) VALUES (%s,%s,%s)"
-        param = (id_chanel,id_user,id_role)
+    def create(self,id_chanel,id_user,id_role,nb_mess):
+        query = "INSERT INTO chan_user (id_chanel,id_user,id_role,nb_mess) VALUES (%s,%s,%s,%s)"
+        param = (id_chanel,id_user,id_role,nb_mess)
         self.executeQuery(query,param)
     
     def read(self):
@@ -35,6 +35,11 @@ class chan_user(DB):
     def update_id_role(self,id,id_role):
         query = "UPDATE _user SET id_role = %s WHERE id = %s"
         param = (id_role,id)
+        self.executeQuery(query,param)
+        
+    def update_nb_mess(self,id,nb_mess):
+        query = "UPDATE chan_user SET nb_mess = %s WHERE id = %s"
+        param = (nb_mess,id)
         self.executeQuery(query,param)
     
     def update_id_role_by_id_user_and_id_chanel(self,id_user,id_chanel,id_role):
