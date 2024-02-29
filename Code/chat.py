@@ -22,9 +22,12 @@ class chat:
         self.curent_chanel = 1
         self.curent_user = user_id
         self.audio_buttons = {}
+        self.unread_messages = {}
         
         self.user_list = User()
         self.chan = chanel()
+        for chan in self.chan.data_list:
+            self.unread_messages[chan[0]] = False
         self.mess = message()
         self.chan_user = chan_user()
         
@@ -94,6 +97,7 @@ class chat:
                 message_content = emoji.emojize(message[0].decode('utf-8'))
                 self.messages_text.insert(tkinter.END, f"({date[0][0]}) {user_name[0][0]} {user_name[0][1]}: {message_content}\n")
         self.chan_user.update_nb_mess(self.nb_messages,self.curent_user,self.curent_chanel)
+        self.unread_messages[self.curent_chanel] = False
 
     def lire_audio(self, message_id):
         audio_blob = self.mess.get_message_by_id(message_id[0][0])
@@ -129,7 +133,8 @@ class chat:
         self.chanels_frame = tkinter.Frame(self.windows,width=100)
         self.chanels_frame.grid(row=0, column=0, sticky="nsew")
         for chanel in self.chan.data_list:
-            self.chanel_button = tkinter.Button(self.chanels_frame, text=chanel[1], command=lambda chanel_id=chanel[0]: self.change_chanel(chanel_id))
+            notif_icon = "🔔" if self.unread_messages[chanel[0]] else ""
+            self.chanel_button = tkinter.Button(self.chanels_frame, text=f"{chanel[1]} {notif_icon}", command=lambda chanel_id=chanel[0]: self.change_chanel(chanel_id))
             self.chanel_button.grid(row=chanel[0], column=0, sticky="nsew")
 
     def add_chanel(self):
@@ -229,12 +234,14 @@ class chat:
             nbt_message = len(self.mess.get_message_by_id_chanel(chan[0]))
             print(nb[0][0],nbt_message)
             if  nb[0][0] != nbt_message:
-                print("Nouveau message dans channel",chan[1])
+                self.unread_messages[chan[0]] = True
 
     def run_function_periodically(self):
         self.messages_text.delete(1.0, tkinter.END)
         self.add_message_in_chat()
         self.verify_nb_messages()
+        self.chanel_button.destroy()
+        self.affiche_chanels()
         self.windows.after(10000, self.run_function_periodically)
 
     def disconnected(self):
