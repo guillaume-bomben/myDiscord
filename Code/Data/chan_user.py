@@ -1,4 +1,4 @@
-from Data.DB import DB
+from Code.Data.DB import DB
 
 class chan_user(DB):
     def __init__(self):

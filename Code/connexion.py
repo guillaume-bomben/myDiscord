@@ -1,7 +1,7 @@
 import sys
 import tkinter as tk
 from tkinter import messagebox
-from Data.User import User
+from Code.Data.User import User
 
 class Connexion:
     def __init__(self):

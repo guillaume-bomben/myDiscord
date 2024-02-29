@@ -1,11 +1,11 @@
 import os
 import sys
 import pygame
-from Data.chanel import chanel
-from Data.message import message
-from Data.User import User
-from Data.chan_user import chan_user
-from admin_page import admin_page
+from Code.Data.chanel import chanel
+from Code.Data.message import message
+from Code.Data.User import User
+from Code.Data.chan_user import chan_user
+from Code.admin_page import admin_page
 import tkinter
 import time
 import pyaudio

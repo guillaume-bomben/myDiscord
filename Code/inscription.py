@@ -1,7 +1,7 @@
 import sys
-from Data.User import User
-from Data.chan_user import chan_user
-from Data.chanel import chanel
+from Code.Data.User import User
+from Code.Data.chan_user import chan_user
+from Code.Data.chanel import chanel
 import tkinter as tk
 from tkinter import messagebox
 

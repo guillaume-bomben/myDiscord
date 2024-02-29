@@ -1,8 +1,8 @@
 import tkinter
 from tkinter import ttk
-from Data.role import role
-from Data.User import User
-from Data.chan_user import chan_user
+from Code.Data.role import role
+from Code.Data.User import User
+from Code.Data.chan_user import chan_user
 
 class admin_page:
     def __init__(self,master,idchan):

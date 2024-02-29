@@ -1,6 +1,6 @@
-from connexion import Connexion
-from inscription import Inscription
-from chat import chat
+from Code.connexion import Connexion
+from Code.inscription import Inscription
+from Code.chat import chat
 
 class app_main:
     def __init__(self):
