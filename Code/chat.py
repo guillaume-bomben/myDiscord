@@ -111,9 +111,10 @@ class chat:
     def send_message(self):
         message_content = self.entry_text.get()
         date = time.strftime("%Y-%m-%d %H:%M:%S")
+        user_name = self.user_list.get_nom_and_prenom_by_id(self.curent_user)
         self.mess.create(message_content,date,self.curent_chanel,self.curent_user,'text') # save the message in the database
         # show the message in the text box
-        self.messages_text.insert(tkinter.END, f"{self.user_list.get_nom_and_prenom_by_id(self.curent_user)} {date}: {message_content}\n")
+        self.messages_text.insert(tkinter.END, f"({date}) {user_name[0][0]} {user_name[0][1]}: {message_content}\n")
         self.entry_text.delete(0, tkinter.END) # clear the entry
 
     def change_chanel(self,chanel_id):
@@ -182,7 +183,7 @@ class chat:
         with open(filename, "rb") as f:
             message_blob = f.read()
             date = time.strftime("%Y-%m-%d %H:%M:%S")
-            self.mess.create(message_blob,date,self.curent_chanel,self.curent_user)
+            self.mess.create(message_blob,date,self.curent_chanel,self.curent_user,'audio')
 
     def audio_list_window(self):
         audio_list = tkinter.Toplevel(self.windows)
@@ -218,7 +219,7 @@ class chat:
 
     def run_function_periodically(self):
         self.messages_text.delete(1.0, tkinter.END)
-        self.affiche_chat()
+        self.add_message_in_chat()
         self.windows.after(10000, self.run_function_periodically)
 
     def disconnected(self):
