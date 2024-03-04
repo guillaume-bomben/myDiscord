@@ -5,6 +5,7 @@ from Code.Data.chanel import chanel
 from Code.Data.message import message
 from Code.Data.User import User
 from Code.Data.chan_user import chan_user
+from Code.Data.role import role
 from Code.admin_page import admin_page
 import tkinter
 import time
@@ -30,6 +31,7 @@ class chat:
             self.unread_messages[chan[0]] = False
         self.mess = message()
         self.chan_user = chan_user()
+        self.role = role()
         
         self.affiche_chat()
         self.affiche_chanels()
@@ -89,13 +91,15 @@ class chat:
             date = self.mess.get_date_by_message(message[0])
             type = self.mess.get_type_by_message(message[0])
             user_name = self.user_list.get_nom_and_prenom_by_id(id[0][0])
+            role_id = self.chan_user.get_id_role_by_id_user_and_id_chanel(id[0][0],self.curent_chanel)
+            role_name = self.role.get_nom_by_id(role_id[0][0])
             if type[0][0] == 'audio':
                 #if the message is an audio message, display a special icon
-                self.messages_text.insert(tkinter.END, f"({date[0][0]}) {user_name[0][0]} {user_name[0][1]}: [🔊 Audio {self.audio_index}]\n")
+                self.messages_text.insert(tkinter.END, f"({date[0][0]}) [{role_name[0][0]}] {user_name[0][0]} {user_name[0][1]}: [🔊 Audio {self.audio_index}]\n")
                 self.audio_index += 1
             else:
                 message_content = emoji.emojize(message[0].decode('utf-8'))
-                self.messages_text.insert(tkinter.END, f"({date[0][0]}) {user_name[0][0]} {user_name[0][1]}: {message_content}\n")
+                self.messages_text.insert(tkinter.END, f"({date[0][0]}) [{role_name[0][0]}] {user_name[0][0]} {user_name[0][1]}: {message_content}\n")
         self.chan_user.update_nb_mess(self.nb_messages,self.curent_user,self.curent_chanel)
         self.unread_messages[self.curent_chanel] = False
 
